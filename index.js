@@ -1,12 +1,13 @@
 const { ApolloServer, gql } = require('apollo-server');
 
-// servidor
+
 
 //schema
 const typeDefs = gql`
 
 type Query {
     obtenerProductos: [Producto]
+    obtenerCategoria: [Categoria]
 }
 
 type Producto {
@@ -14,32 +15,38 @@ type Producto {
     descripcion : String
 }
 
+type Categoria{
+    categoria:String
+}
+
+
 `;
 
 
 const productos = [
     {
-        nombre: 'pañales',
-        descripcion: 'Para bebe etapa2'
+        nombre: 'COMPLEJO B TAB C30',
+        categoria: 'Básicos'
     },
     {
-        nombre: 'pasta dental',
-        descripcion: 'para gengitivitis',
+        nombre: 'Limustin 1mg Cap C50',
+        categoria: 'Alta especialidad',
     },
     {
-        nombre: 'otro producto',
-        descripcion: 'descripcion otro producto'
+        nombre: 'KABRITA ETAPA 2 FORMULA 400G',
+        categoria: 'Bebes'
     }, 
     {
-        nombre: 'otro producto 2',
-        descripcion: 'descripcion otro producto 2'
+        nombre: 'PRUDENCE ANILLO VIBRADOR TERREMO',
+        categoria: 'Salud sexual'
     }
 ];
 
 //resolver
 const resolvers = {
     Query: {
-        obtenerProductos: () => productos
+        obtenerProductos: () => productos,
+        obtenerCategoria: () => productos
     },
 };
 
