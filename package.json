@@ -1,0 +1,19 @@
+{
+  "name": "crmgraphql",
+  "version": "1.0.0",
+  "description": "Servidor",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "author": "Alberto Román Pérez",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.23.0",
+    "graphql": "^15.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
