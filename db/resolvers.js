@@ -53,12 +53,12 @@ const resolvers = {
         obtenerCliente: async (_, { id }, ctx) => {
             // REvisar si el cliente existe
             const cliente = await Cliente.findById(id);
-            if (!Cliente) {
+            if (!cliente) {
                 throw new Error('Cliente no encontrado');
             }
 
             //Quien lo crea lo puede ver
-            if(cliente.vendedor.toString() !== ctx.usuario.id){
+            if (cliente.vendedor.toString() !== ctx.usuario.id) {
                 throw new Error('No tienes las validaciones');
             }
 
@@ -166,7 +166,41 @@ const resolvers = {
             } catch (error) {
                 console.log(error);
             }
+        },
+        actualizarCliente: async (_, { id, input }, ctx) => {
+            //verificar si existe o no
+            let cliente = await Cliente.findById(id);
+            if (!cliente) {
+                throw new Error('Cliente no encontrado');
+            }
+
+            //verificar si es cliente del vendedor
+            if (cliente.vendedor.toString() !== ctx.usuario.id) {
+                throw new Error('No tienes las validaciones');
+            }
+
+            //Guardar cliente
+            cliente = await Cliente.findOneAndUpdate({ _id: id }, input, { new: true });
+            return cliente;
+        },
+        eliminarCliente: async (_, { id }, ctx) => {
+            //verificar si existe o no
+            let cliente = await Cliente.findById(id);
+            if (!cliente) {
+                throw new Error('Cliente no encontrado');
+            }
+
+            //verificar si es cliente del vendedor
+            if (cliente.vendedor.toString() !== ctx.usuario.id) {
+                throw new Error('No tienes autorización');
+            }
+
+            //Eliminar Cliente
+            await Cliente.findOneAndDelete({ _id: id });
+            return "Cliente eliminado"
+
         }
+
 
     }
 };
