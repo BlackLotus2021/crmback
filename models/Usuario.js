@@ -31,6 +31,13 @@ const UsuariosSchema = mongoose.Schema({
         required:false,
         trim:true
     },
+    /*
+    farmacia:{
+        type: String,
+        required: true,
+        trim: true
+    }
+    */
     email: {
         type: String,
         required: true,

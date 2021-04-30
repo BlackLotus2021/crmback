@@ -1,5 +1,6 @@
 const Usuario = require('../models/Usuario');
 const Producto = require('../models/Producto');
+const Cliente = require('../models/Cliente');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config({ path: 'variables.env' });
@@ -32,6 +33,36 @@ const resolvers = {
                 throw new Error('Producto no encontrado');
             }
             return producto
+        },
+        obtenerClientes: async () => {
+            try {
+                const clientes = await Cliente.find({});
+                return clientes
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        obtenerClientesVendedor: async (_, { }, ctx) => {
+            try {
+                const clientes = await Cliente.find({ vendedor: ctx.usuario.id.toString() });
+                return clientes
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        obtenerCliente: async (_, { id }, ctx) => {
+            // REvisar si el cliente existe
+            const cliente = await Cliente.findById(id);
+            if (!Cliente) {
+                throw new Error('Cliente no encontrado');
+            }
+
+            //Quien lo crea lo puede ver
+            if(cliente.vendedor.toString() !== ctx.usuario.id){
+                throw new Error('No tienes las validaciones');
+            }
+
+            return cliente;
         }
     },
     Mutation: {
@@ -109,8 +140,32 @@ const resolvers = {
             }
 
             //Eliminar
-            await Producto.findOneAndDelete({ _id : id});
+            await Producto.findOneAndDelete({ _id: id });
             return "Producto Eliminado"
+        },
+        nuevoCliente: async (_, { input }, ctx) => {
+            console.log(ctx);
+            const { email } = input;
+            //verificar si el cluiente existe
+            // console.log(input);
+            const cliente = await Cliente.findOne({ email });
+            if (cliente) {
+                throw new Error("Ese cliente ya esta registrado")
+            }
+
+            const nuevoCliente = new Cliente(input);
+
+            //Asignar al vendedor
+            nuevoCliente.vendedor = ctx.usuario.id;
+
+
+            //Guardar en la BD
+            try {
+                const resultado = await nuevoCliente.save();
+                return resultado;
+            } catch (error) {
+                console.log(error);
+            }
         }
 
     }
