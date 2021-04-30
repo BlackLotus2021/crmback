@@ -32,6 +32,21 @@ type Cliente{
     telefono:String
     vendedor:ID
 }
+type Pedido{
+    id:ID
+    pedido:[PedidoGrupo]
+    total:Float
+    cliente:ID
+    vendedor:ID
+    fecha:String
+    estado:EstadoPedido
+}
+type PedidoGrupo{
+    id:ID
+    cantidad: Int
+    nombre:String
+    precio:Float
+}
 
 input AutenticarUsuarioInput{
     email:String!
@@ -60,6 +75,24 @@ input ClienteInput{
     email:String!,
     telefono:String
 }
+input PedidoInput{
+    pedido:[PedidoProductoInput]
+    total:Float
+    cliente:ID
+    estado:EstadoPedido
+}
+input PedidoProductoInput{
+    id:ID
+    cantidad:Int
+    nombre:String,
+    precio:Float
+}
+
+enum EstadoPedido{
+    PENDIENTE
+    COMPLETADO
+    CANCELADO
+}
 
 type Query{
     #Usuarios
@@ -71,6 +104,11 @@ type Query{
     obtenerClientes:[Cliente]
     obtenerClientesVendedor:[Cliente]
     obtenerCliente(id:ID!):Cliente
+    #Pedidos
+    obtenerPedidos:[Pedido]
+    obtenerPedidosVendedor:[Pedido]
+    obtenerPedido(id:ID!):Pedido
+    obtenerPedidosEstado(estado:String!):[Pedido]
 }
 
 
@@ -88,6 +126,11 @@ type Mutation{
     nuevoCliente(input:ClienteInput): Cliente
     actualizarCliente(id:ID, input:ClienteInput): Cliente
     eliminarCliente(id:ID!):String
+
+    #Pedidos
+    nuevoPedido(input:PedidoInput):Pedido
+    actualizarPedido(id:ID!, input:PedidoInput):Pedido
+    eliminarPedido(id:ID!):String
 }
 
 `;
