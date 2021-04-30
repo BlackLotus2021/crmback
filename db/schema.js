@@ -2,25 +2,38 @@ const { gql } = require('apollo-server');
 //schema
 const typeDefs = gql`
 
-type Query {
-    obtenerProductos: [Producto]
-    obtenerCategoria: [Categoria]
-    obtenerCategoriaInput(input:ProductoInput!) :[Producto]
+type Usuario{
+    id:ID
+    nombre:String
+    apellido:String
+    direccion:String
+    ciudad:String
+    pais:String
+    telefono:String
+    email:String
+    creado:String
 }
 
-type Producto {
-    nombre : String
-    categoria : String
+input UsuarioInput {
+    nombre:String!
+    apellido:String!
+    direccion:String!
+    ciudad:String!
+    pais:String!
+    telefono:String!
+    email:String!
+    password:String!
+
 }
 
-type Categoria{
-    categoria:String
+type Query{
+    obtenerProducto: String
 }
 
-input ProductoInput{
-    categoria:String
+type Mutation{
+    nuevoUsuario(input:UsuarioInput): String
 }
 
 `;
 
-module.exports= typeDefs;
+module.exports = typeDefs;
