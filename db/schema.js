@@ -13,6 +13,13 @@ type Usuario{
     email:String
     creado:String
 }
+type Token{
+    token:String
+}
+input AutenticarUsuarioInput{
+    email:String!
+    password:String!
+}
 
 input UsuarioInput {
     nombre:String!
@@ -27,11 +34,12 @@ input UsuarioInput {
 }
 
 type Query{
-    obtenerProducto: String
+    obtenerUsuario(token:String!) : Usuario
 }
 
 type Mutation{
     nuevoUsuario(input:UsuarioInput): Usuario
+    autenticarUsuario(input:AutenticarUsuarioInput): Token
 }
 
 `;
