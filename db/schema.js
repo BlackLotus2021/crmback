@@ -16,11 +16,19 @@ type Usuario{
 type Token{
     token:String
 }
+type Producto{
+    id:ID
+    nombre:String!
+    existencia:Int!
+    precio:Float!
+    categoria:String!
+    creado:String!
+}
+
 input AutenticarUsuarioInput{
     email:String!
     password:String!
 }
-
 input UsuarioInput {
     nombre:String!
     apellido:String!
@@ -33,13 +41,31 @@ input UsuarioInput {
 
 }
 
-type Query{
-    obtenerUsuario(token:String!) : Usuario
+input ProductoIntput{
+    nombre:String!
+    existencia:Int!
+    precio:Float!
+    categoria:String!
 }
 
+type Query{
+    #Usuarios
+    obtenerUsuario(token:String!) : Usuario
+    #Productos
+    obtenerProductos:[Producto]
+    obtenerProducto(id:ID!) : Producto
+}
+
+
 type Mutation{
+    #Usuarios
     nuevoUsuario(input:UsuarioInput): Usuario
     autenticarUsuario(input:AutenticarUsuarioInput): Token
+
+    #Productos
+    nuevoProducto(input:ProductoIntput):Producto
+    actualizarProducto(id:ID!, input:ProductoIntput):Producto
+    eliminarProducto(id:ID!): String
 }
 
 `;
